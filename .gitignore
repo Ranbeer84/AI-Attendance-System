@@ -1,69 +1,64 @@
 # Python
 
 __pycache__/
-
 *.py[cod]
-
 *.pyo
 
 # Virtual environments
-
 .venv/
-
 venv/
-
 env/
-
 aias/
 
 # Environment variables
-
 .env
+.env.*
+!.env.example
+
 
 # macOS
 
 .DS_Store
 
-# Node
+
+# Node / React
 
 node_modules/
-
 dist/
-
 build/
+.vite/
+
 
 # IDE
 
 .vscode/*
-
 !.vscode/settings.json
-
 .idea/
+
 
 # Logs
 
 *.log
 
-# Testing / coverage
+
+# Testing / Coverage
 
 .pytest_cache/
-
 .coverage
-
+.coverage.*
 htmlcov/
+.mypy_cache/
+.ruff_cache/
+
 
 # Database
 
 *.db
-
 *.sqlite
-
 *.sqlite3
 
-# OS / temporary files
+
+# OS / Temporary files
 
 *.tmp
-
 *.temp
-
-EOF

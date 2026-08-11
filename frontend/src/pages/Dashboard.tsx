@@ -7,6 +7,7 @@ import Reveal from "../components/shared/Reveal";
 import { AttendanceTrendChart, ClassBreakdownChart } from "../components/charts/AttendanceChart";
 import { getDashboardStats } from "../api/reportApi";
 import { useAuth } from "../context/AuthContext";
+import "../styles/dashboard.css";
 import type { DashboardStats } from "../types";
 
 const StatIcon = ({ type }: { type: "students" | "classes" | "sessions" | "attendance" }) => {

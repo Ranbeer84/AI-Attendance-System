@@ -2,8 +2,11 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import type { AxiosError } from "axios";
+
+import { useAuth } from "../context/AuthContext";
+
+import "../styles/login.css";
 
 export default function Login() {
   const { login } = useAuth();
