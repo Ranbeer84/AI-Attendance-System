@@ -1,0 +1,26 @@
+/* frontend/src/styles/index.css
+   Entry point — imports every stylesheet in the order the cascade needs.
+   Keep this order: later files intentionally override earlier ones
+   (e.g. student-form.css overrides the generic rules in forms.css). */
+
+/* 1. Foundations */
+@import "./base.css";
+
+/* 2. App shell (sidebar, navbar, layout) */
+@import "./layout.css";
+
+/* 3. Shared components */
+@import "./buttons.css";
+@import "./loader.css";
+@import "./modal.css";
+@import "./forms.css";
+@import "./table.css";
+@import "./charts.css";
+@import "./photo-capture-grid.css";
+
+/* 4. Page-specific styles */
+@import "./dashboard.css";
+@import "./login.css";
+@import "./student-registration.css";
+@import "./student-form.css"; /* must come after forms.css — overrides it */
+@import "./take-attendance.css";

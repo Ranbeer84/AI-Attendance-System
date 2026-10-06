@@ -1,0 +1,136 @@
+/* frontend/src/styles/dashboard.css
+   Pairs with: pages/Dashboard.tsx
+   (Shared .page-header-row / .page-title / .error-banner live in forms.css) */
+
+/* =========================================================
+   Page hero
+   ========================================================= */
+
+.page-hero {
+  margin-bottom: 36px;
+}
+
+.page-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-hover);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.page-hero-title {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin: 0 0 8px;
+}
+
+.page-hero-subtitle {
+  font-size: 15px;
+  color: var(--color-text-muted);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Stat cards — modern, bigger, with icons
+   ========================================================= */
+
+.stat-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  position: relative;
+  background: linear-gradient(145deg, #ffffff 0%, #faf9f6 100%);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow:
+    0 1px 2px rgba(28, 35, 31, 0.04),
+    0 12px 32px -12px rgba(28, 35, 31, 0.12);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 24px 24px 0 0;
+  background: linear-gradient(90deg, var(--color-primary), #4fe0ac);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 4px 12px -2px rgba(28, 35, 31, 0.1),
+    0 24px 48px -16px rgba(28, 35, 31, 0.18);
+}
+
+.stat-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.stat-card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.summary-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.summary-value {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .summary-value {
+    font-size: 32px;
+  }
+
+  .page-hero-title {
+    font-size: 26px;
+  }
+}

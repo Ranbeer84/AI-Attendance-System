@@ -1,0 +1,249 @@
+/* frontend/src/styles/photo-capture-grid.css
+   Pairs with: components/forms/PhotoCaptureGrid.tsx */
+
+.photo-capture-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- Dropzone --- */
+
+.photo-dropzone {
+  position: relative;
+  padding: 44px 32px;
+  border: 2px dashed var(--color-border);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #faf9f6, #f6f4ec);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.photo-dropzone:hover {
+  border-color: var(--color-primary);
+  background: linear-gradient(145deg, #f0faf4, #e8f5ee);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px -12px rgba(31, 157, 115, 0.22);
+}
+
+.photo-dropzone--dragover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  transform: scale(1.01);
+  box-shadow: 0 0 0 4px rgba(31, 157, 115, 0.15);
+}
+
+.photo-dropzone__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.photo-dropzone__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 18px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-dropzone__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.photo-dropzone__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+}
+
+.photo-dropzone__subtitle {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* --- Progress bar --- */
+
+.photo-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.photo-progress__bar {
+  flex: 1;
+  height: 8px;
+  background: var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.photo-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-primary), #4fe0ac);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.photo-progress__text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.photo-progress__text--ready {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* --- Photo grid --- */
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  gap: 14px;
+}
+
+.photo-thumb {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--color-border);
+  background: var(--color-bg);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  animation: thumbPop 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes thumbPop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.photo-thumb:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-primary);
+}
+
+.photo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-thumb__index {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: rgba(22, 33, 29, 0.55);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+.photo-thumb-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: rgba(22, 33, 29, 0.6);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.15s ease;
+}
+
+.photo-thumb-remove:hover {
+  background: var(--color-error);
+  transform: scale(1.15) rotate(90deg);
+}
+
+/* --- Empty state --- */
+
+.photo-empty {
+  text-align: center;
+  padding: 32px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* --- Submit row --- */
+
+.photo-submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
+.photo-submit-hint {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.photo-submit-hint--ready {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .photo-dropzone {
+    padding: 32px 20px;
+  }
+
+  .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    gap: 10px;
+  }
+
+  .photo-submit-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .photo-submit-row .btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,264 @@
+/* frontend/src/styles/take-attendance.css
+   Pairs with: pages/TakeAttendance.tsx */
+
+.attendance-page {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* --- Dropzone (single group photo) --- */
+
+.attendance-dropzone {
+  position: relative;
+  padding: 52px 32px;
+  border: 2px dashed var(--color-border);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #faf9f6, #f6f4ec);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.attendance-dropzone:hover {
+  border-color: var(--color-primary);
+  background: linear-gradient(145deg, #f0faf4, #e8f5ee);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px -12px rgba(31, 157, 115, 0.22);
+}
+
+.attendance-dropzone--dragover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  transform: scale(1.01);
+  box-shadow: 0 0 0 4px rgba(31, 157, 115, 0.15);
+}
+
+.attendance-dropzone--has-file {
+  border-style: solid;
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.attendance-dropzone__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.attendance-dropzone__icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 20px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.attendance-dropzone__icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.attendance-dropzone__title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+}
+
+.attendance-dropzone__subtitle {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.attendance-dropzone__file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-primary-hover);
+}
+
+/* --- Preview card --- */
+
+.attendance-preview {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  animation: previewEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes previewEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.attendance-preview__image {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.attendance-preview__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(22, 33, 29, 0.75), transparent);
+  color: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.attendance-preview__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.attendance-preview__filename {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.attendance-preview__size {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.attendance-preview__change {
+  padding: 8px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.attendance-preview__change:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* --- Form layout for attendance --- */
+
+.attendance-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.attendance-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.attendance-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.attendance-form .form-input {
+  padding: 13px 14px 13px 44px;
+}
+
+.attendance-form select.form-input {
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+.attendance-form .btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px;
+  font-size: 15px;
+  justify-content: center;
+}
+
+/* --- Uploading state --- */
+
+.attendance-uploading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px 32px;
+  text-align: center;
+  animation: fadeUp 0.3s ease;
+}
+
+.attendance-uploading__spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.attendance-uploading__text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.attendance-uploading__sub {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .attendance-form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-preview__overlay {
+    padding: 16px;
+  }
+
+  .attendance-dropzone {
+    padding: 36px 20px;
+  }
+}

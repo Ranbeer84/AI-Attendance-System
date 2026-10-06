@@ -1,0 +1,421 @@
+/* frontend/src/styles/student-registration.css
+   Pairs with: pages/StudentRegistration.tsx
+   (also relies on .btn from buttons.css and .form-input from forms.css) */
+
+.registration-page {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* --- Stepper --- */
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 40px;
+  padding: 0 16px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.step:not(:last-child)::after {
+  content: "";
+  width: 48px;
+  height: 2px;
+  background: var(--color-border);
+  margin: 0 16px;
+  border-radius: 2px;
+  transition: background 0.4s ease;
+}
+
+.step.step--done:not(:last-child)::after {
+  background: var(--color-primary);
+}
+
+.step__circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.step--active .step__circle {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 4px 14px -4px rgba(31, 157, 115, 0.5);
+}
+
+.step--done .step__circle {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.step__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.step--active .step__label {
+  color: var(--color-text);
+}
+
+.step--done .step__label {
+  color: var(--color-primary-hover);
+}
+
+/* --- Registration cards --- */
+
+.reg-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  padding: 36px;
+  animation: cardEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.reg-card__header {
+  margin-bottom: 28px;
+}
+
+.reg-card__title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.reg-card__subtitle {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* --- Photo upload zone (modern dropzone, this page's own variant) --- */
+
+.photo-dropzone {
+  border: 2px dashed var(--color-border);
+  border-radius: 20px;
+  padding: 48px 32px;
+  text-align: center;
+  background: linear-gradient(145deg, #faf9f6, #f6f4ec);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-dropzone:hover {
+  border-color: var(--color-primary);
+  background: linear-gradient(145deg, #f0faf4, #e8f5ee);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -12px rgba(31, 157, 115, 0.2);
+}
+
+.photo-dropzone__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 18px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-dropzone__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.photo-dropzone__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 6px;
+}
+
+.photo-dropzone__hint {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* --- Photo grid (after selection) --- */
+
+.photo-grid-modern {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.photo-thumb-modern {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--color-border);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.photo-thumb-modern:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.15);
+}
+
+.photo-thumb-modern img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-thumb-modern__remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: rgba(22, 33, 29, 0.7);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.photo-thumb-modern__remove:hover {
+  background: var(--color-error);
+  transform: scale(1.1);
+}
+
+/* --- Success state --- */
+
+.success-state {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.success-state__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: successPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.success-state__icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+@keyframes successPop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.success-state__title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 8px;
+  animation: fadeUp 0.5s ease 0.35s both;
+}
+
+.success-state__subtitle {
+  font-size: 15px;
+  color: var(--color-text-muted);
+  margin: 0 0 32px;
+  animation: fadeUp 0.5s ease 0.45s both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.5s ease 0.55s both;
+}
+
+.success-stat {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.success-stat__value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.success-stat__value--success {
+  color: var(--color-primary);
+}
+
+.success-stat__value--fail {
+  color: var(--color-error);
+}
+
+.success-stat__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* --- Face issue list --- */
+
+.face-issue-list {
+  background: var(--color-error-bg);
+  border: 1px solid rgba(217, 79, 61, 0.15);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin: 20px 0;
+  text-align: left;
+  animation: fadeUp 0.4s ease 0.6s both;
+}
+
+.face-issue-list__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-error);
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.face-issue-list ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.face-issue-list li {
+  margin-bottom: 4px;
+}
+
+/* --- Button row --- */
+
+.button-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.5s ease 0.6s both;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 640px) {
+  .stepper {
+    margin-bottom: 28px;
+  }
+
+  .step__label {
+    display: none;
+  }
+
+  .step:not(:last-child)::after {
+    width: 24px;
+    margin: 0 8px;
+  }
+
+  .reg-card {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+
+  .photo-dropzone {
+    padding: 32px 20px;
+  }
+
+  .success-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .button-row {
+    flex-direction: column;
+  }
+
+  .button-row .btn {
+    width: 100%;
+  }
+}
