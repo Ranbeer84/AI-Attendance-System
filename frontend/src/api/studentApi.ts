@@ -33,9 +33,7 @@ export async function deleteStudent(studentId: string): Promise<void> {
 export async function uploadProfilePhoto(studentId: string, file: File): Promise<Student> {
   const formData = new FormData();
   formData.append("file", file);
-  const response = await axiosInstance.post<Student>(`/students/${studentId}/photo`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const response = await axiosInstance.post<Student>(`/students/${studentId}/photo`, formData);
   return response.data;
 }
 
@@ -59,8 +57,7 @@ export async function registerFaces(studentId: string, files: File[]): Promise<F
   files.forEach((file) => formData.append("files", file));
   const response = await axiosInstance.post<FaceRegistrationSummary>(
     `/students/${studentId}/register-face`,
-    formData,
-    { headers: { "Content-Type": "multipart/form-data" } }
+    formData
   );
   return response.data;
 }

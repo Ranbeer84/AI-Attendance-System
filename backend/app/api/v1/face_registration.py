@@ -1,6 +1,7 @@
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi.concurrency import run_in_threadpool
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -35,4 +36,8 @@ async def register_face(
         content = await f.read()
         file_payloads.append((f.filename, content, f.content_type))
 
-    return student_service.register_face_batch(db, student, file_payloads)
+    # Detection + embedding is CPU-heavy and synchronous; run it in a worker thread
+    # so the event loop (and every other request) isn't frozen while it runs.
+    return await run_in_threadpool(
+        student_service.register_face_batch, db, student, file_payloads
+    )

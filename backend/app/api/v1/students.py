@@ -7,6 +7,7 @@ from app.core.database import get_db
 from app.api.deps import get_current_teacher
 from app.schemas.student import StudentCreate, StudentUpdate, StudentOut
 from app.services import student_service
+from app.services.student_service import DuplicateStudentError
 from app.utils.image_utils import InvalidImageError
 
 router = APIRouter(prefix="/students", tags=["students"])
@@ -18,7 +19,10 @@ def create_student(
     db: Session = Depends(get_db),
     current_teacher=Depends(get_current_teacher),
 ):
-    return student_service.create_student(db, payload)
+    try:
+        return student_service.create_student(db, payload)
+    except DuplicateStudentError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
 
 
 @router.get("", response_model=list[StudentOut])
@@ -54,7 +58,10 @@ def update_student(
     student = student_service.get_student(db, student_id)
     if not student:
         raise HTTPException(status_code=404, detail="Student not found")
-    return student_service.update_student(db, student, payload)
+    try:
+        return student_service.update_student(db, student, payload)
+    except DuplicateStudentError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc))
 
 
 @router.delete("/{student_id}", status_code=status.HTTP_204_NO_CONTENT)

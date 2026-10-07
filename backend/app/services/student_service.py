@@ -2,6 +2,7 @@ import uuid
 
 import cv2
 import numpy as np
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.models.student import Student
@@ -17,10 +18,39 @@ from app.ai.face_embedder import FaceEmbedder
 
 # --- Student CRUD (Phase 2) ---
 
+class DuplicateStudentError(Exception):
+    """Raised when a roll number or email is already used by another student."""
+
+
+def _ensure_unique(
+    db: Session,
+    roll_number: str | None,
+    email: str | None,
+    exclude_id: uuid.UUID | None = None,
+) -> None:
+    if roll_number is not None:
+        query = db.query(Student).filter(Student.roll_number == roll_number)
+        if exclude_id is not None:
+            query = query.filter(Student.id != exclude_id)
+        if query.first():
+            raise DuplicateStudentError(f"A student with roll number '{roll_number}' already exists")
+    if email:
+        query = db.query(Student).filter(Student.email == email)
+        if exclude_id is not None:
+            query = query.filter(Student.id != exclude_id)
+        if query.first():
+            raise DuplicateStudentError(f"A student with email '{email}' already exists")
+
+
 def create_student(db: Session, payload: StudentCreate) -> Student:
+    _ensure_unique(db, payload.roll_number, payload.email)
     student = Student(**payload.model_dump())
     db.add(student)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise DuplicateStudentError("A student with this roll number or email already exists")
     db.refresh(student)
     return student
 
@@ -43,9 +73,19 @@ def get_students(
 
 def update_student(db: Session, student: Student, payload: StudentUpdate) -> Student:
     update_data = payload.model_dump(exclude_unset=True)
+    _ensure_unique(
+        db,
+        update_data.get("roll_number"),
+        update_data.get("email"),
+        exclude_id=student.id,
+    )
     for field, value in update_data.items():
         setattr(student, field, value)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise DuplicateStudentError("A student with this roll number or email already exists")
     db.refresh(student)
     return student
 

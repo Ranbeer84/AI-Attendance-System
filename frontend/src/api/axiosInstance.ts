@@ -3,11 +3,13 @@ import type { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1";
 
+// NOTE: do NOT set a default "Content-Type" here. With a default of
+// "application/json", axios converts any FormData body into a JSON string
+// (files become {}), so multipart uploads reach FastAPI without a `files`
+// field and fail with 422. Axios already sets JSON automatically for plain
+// objects, and lets the browser set multipart + boundary for FormData.
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 // Attach the JWT access token to every outgoing request, if we have one.

@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import type { StudentCreatePayload, SchoolClass } from "../../types";
 
 import Button from "../shared/Button";
+import { getErrorMessage } from "../../utils/errors";
 
 interface StudentFormProps {
   classes: SchoolClass[];
@@ -79,8 +80,8 @@ export default function StudentForm({
         email: email.trim() || null,
         class_id: classId || null,
       });
-    } catch (err: any) {
-      setError(err?.response?.data?.detail || "Failed to save student");
+    } catch (err) {
+      setError(getErrorMessage(err, "Failed to save student"));
     } finally {
       setIsSubmitting(false);
     }

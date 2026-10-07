@@ -11,9 +11,7 @@ export async function uploadGroupPhoto(file: File, classId?: string): Promise<Up
   formData.append("file", file);
   if (classId) formData.append("class_id", classId);
 
-  const response = await axiosInstance.post<UploadPhotoResponse>("/attendance/upload-photo", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  const response = await axiosInstance.post<UploadPhotoResponse>("/attendance/upload-photo", formData);
   return response.data;
 }
 

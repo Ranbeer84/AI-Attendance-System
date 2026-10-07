@@ -12,6 +12,7 @@ import {
   registerFaces,
 } from "../api/studentApi";
 import type { FaceRegistrationSummary } from "../api/studentApi";
+import { getErrorMessage } from "../utils/errors";
 
 import type {
   SchoolClass,
@@ -70,6 +71,7 @@ export default function StudentRegistration() {
   useEffect(() => {
     getClasses()
       .then(setClasses)
+      .catch(() => setClasses([]))
       .finally(() => setIsLoadingClasses(false));
   }, []);
 
@@ -80,15 +82,28 @@ export default function StudentRegistration() {
   }
 
   async function handlePhotosReady(files: File[]) {
-    if (!createdStudent) return;
+    if (!createdStudent || isRegisteringFaces) return;
     setFaceError(null);
     setIsRegisteringFaces(true);
     try {
       const summary = await registerFaces(createdStudent.id, files);
+
+      // The backend answers 200 even when EVERY photo was rejected (no face, several
+      // faces, wrong type...). That is not a successful registration: stay on this
+      // step, explain why, and let the teacher pick different photos.
+      if (summary.successful === 0) {
+        const reasons = summary.results
+          .filter((r) => r.status === "failed")
+          .map((r) => `${r.filename}: ${r.reason ?? "rejected"}`)
+          .join(" • ");
+        setFaceError(`No usable face was found in any photo. ${reasons}`);
+        return;
+      }
+
       setFaceSummary(summary);
       setStep("done");
-    } catch (err: any) {
-      setFaceError(err?.response?.data?.detail || "Failed to register faces");
+    } catch (err) {
+      setFaceError(getErrorMessage(err, "Failed to register faces"));
     } finally {
       setIsRegisteringFaces(false);
     }
@@ -135,11 +150,15 @@ export default function StudentRegistration() {
 
             {faceError && <div className="error-banner">{faceError}</div>}
 
-            {isRegisteringFaces ? (
-              <Loader label="Processing photos… this can take a minute" />
-            ) : (
-              <PhotoCaptureGrid onFilesReady={handlePhotosReady} />
+            {isRegisteringFaces && (
+              <Loader label="Processing photos… the first upload can take a minute while the AI model loads" />
             )}
+
+            {/* Always mounted so the selected photos survive an error or a retry. */}
+            <PhotoCaptureGrid
+              onFilesReady={handlePhotosReady}
+              isUploading={isRegisteringFaces}
+            />
           </div>
         )}
 
